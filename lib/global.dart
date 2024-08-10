@@ -18,7 +18,6 @@ sendPost(url, body) async {
 }
 
 sendGet(url) async {
-  print("inner ge");
   var result = null;
   await http.get(Uri.parse(url), 
       headers: {"Content-Type": "application/json"})

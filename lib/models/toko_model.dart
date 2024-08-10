@@ -29,12 +29,11 @@ class Toko {
   }
 
   static Future<List> all() async {
-    print("send get");
     var jsonResult = await Global.sendGet(Global.api_url+"/toko");
 
     var tempToko = [];
     for (var toko in jsonResult) {
-      tempToko.add(Hadiah.fromJson(toko));
+      tempToko.add(Toko.fromJson(toko));
     }
 
     return tempToko;

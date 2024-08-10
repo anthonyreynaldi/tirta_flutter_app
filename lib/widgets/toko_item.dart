@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_app/models/toko_model.dart';
 import 'package:flutter_app/widgets/hadiah_item.dart';
 
 class TokoItem extends StatelessWidget {
-  const TokoItem({super.key});
+  final Toko toko;
+  const TokoItem({super.key, required this.toko});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +24,13 @@ class TokoItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Nama Toko", style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    Text(toko.nama, style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold)),
                     SizedBox(height: 6,),
                     Row(
                       children: [
                         Icon(Icons.pin_drop_outlined, color: Colors.white,size: 12,),
                         SizedBox(width: 6,),
-                        Text("alamat toko", style: TextStyle(color: Colors.white),)
+                        Text(toko.alamat, style: TextStyle(color: Colors.white),)
                       ],
                     )
                   ],
@@ -36,13 +38,13 @@ class TokoItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("status", style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    Text(toko.id, style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold)),
                     SizedBox(height: 6,),
                     Row(
                       children: [
                         Icon(Icons.phone, color: Colors.white, size: 12,),
                         SizedBox(width: 6,),
-                        Text("+62123131231", style: TextStyle(color: Colors.white),)
+                        Text(toko.telp, style: TextStyle(color: Colors.white),)
                       ],
                     )
                   ],
@@ -58,38 +60,12 @@ class TokoItem extends StatelessWidget {
              Column(
               children: [
                 SizedBox(height: 16,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-                  child: HadiahItem(),
-                ),
+                for(var hadiah in toko.listHadiah)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
+                    child: HadiahItem(hadiah: hadiah,),
+                  ),
+                
                 SizedBox(height: 16,),
                 ElevatedButton(
                   onPressed: (){}, 

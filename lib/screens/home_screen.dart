@@ -12,23 +12,54 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List listToko = [];
-  var selectedToko = "";
+  var selectedToko = "ALL";
 
-  getTokoData() async {
-    print("masok");
-      await Toko.all().then((value) => {
-        setState(() {
-          print("selese");
-          listToko = value;
-        })
-      });
+  Future<dynamic> getTokoData() async {
+    await Toko.all().then((value) => {
+        listToko = value
+    });
+    return listToko;
   }
 
   void updateSelectedToko(newToko) {
-    setState(() {
-      selectedToko = newToko;
+      setState(() {
+        selectedToko = newToko;
+      });
       print(selectedToko);
-    });
+  }
+
+  void showRekapTotalHadiah(){
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Total Hadiah"),
+            Ink(
+              decoration: const ShapeDecoration(
+                color: Color(0xFF00887a),
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.close),
+                color: Colors.white,
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
+        content: Container(
+          child: Column(
+            children: [
+              Divider(thickness: 4,),
+              
+              Divider(thickness: 4,),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -47,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Center(child: CircularProgressIndicator(),);
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData) {
+            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
               return Center(child: Text('Tidak Ada Data'));
             }
 
@@ -61,13 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //select toko
-                        CustomSelect(options: ["a", "b", "c"], onUpdate: updateSelectedToko),
+                        CustomSelect(options: listToko, onUpdate: updateSelectedToko),
 
                         SizedBox(width: 16,),
 
                         //check total hadiah
                         ElevatedButton.icon(
-                          onPressed: (){}, 
+                          onPressed: showRekapTotalHadiah, 
                           icon: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Icon(Icons.card_giftcard_rounded),
@@ -80,13 +111,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
-                        children: [
-                          TokoItem(),
-                          TokoItem(),
-                          TokoItem(),
-                          TokoItem(),
-                          TokoItem(),
-                          
+                        children: [ 
+                          for(var toko in listToko)
+                            if (toko.id == selectedToko || selectedToko == "ALL")
+                              TokoItem(toko: toko,)
                         ],
                       ),
                     ),
